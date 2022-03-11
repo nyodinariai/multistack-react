@@ -150,7 +150,7 @@ export const BottomButton = styled("span")`
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%, 50%);
+  transform: translate(-50%, 50%);
   background-color: ${({ theme }) => theme.palette.secondary.main};
   padding: 11px 12px;
   border-radius: 50px;
