@@ -11,7 +11,12 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ selected, items }) => {
     return (
         <BreadcrumbContainer>
             {items.map((item, index) => (
-                <BreadcrumbItem key={item}>{item}</BreadcrumbItem>
+                <React.Fragment key={item}>
+                    <BreadcrumbItem isSelected={selected === item}>
+                        {item}
+                    </BreadcrumbItem>
+                    {index !== items.length - 1 && <span> &gt; </span>}
+                </React.Fragment>
             ))}
         </BreadcrumbContainer>
     );
