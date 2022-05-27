@@ -15,6 +15,20 @@ export const BaseGrid = styled('div')`
      gap: ${({theme}) => theme.spacing(3)};
  }
 `
+export const UserData = styled(BaseGrid)`
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+        'nome nome nome'
+        'data-nascimento cpf telefone';
+
+    ${({ theme }) => theme.breakpoints.down('md')} {
+        grid-template-areas:
+            'nome'
+            'data-nascimento'
+            'cpf'
+            'telefone';
+    }
+`;
 
 export const NewContactData = styled(BaseGrid)`
     grid-template-columns: repeat(2, 1fr);
@@ -31,3 +45,10 @@ export const NewContactData = styled(BaseGrid)`
             'confirmar-senha'
     }
 `;
+
+export const PictureSelection = styled(BaseGrid)`
+    grid-template-columns: 1fr;
+    padding: 0;
+`;
+
+
