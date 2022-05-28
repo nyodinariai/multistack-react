@@ -46,6 +46,38 @@ export const NewContactData = styled(BaseGrid)`
     }
 `;
 
+export const PaymentData = styled(BaseGrid)`
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+        'numero numero'
+        'nome nome'
+        'validade codigo'
+        'erro erro';
+
+    ${({ theme }) => theme.breakpoints.down('md')} {
+        grid-template-areas:
+            'numero'
+            'nome'
+            'validade'
+            'codigo'
+            'erro';
+    }
+`;
+
+export const AddressData = styled(BaseGrid)`
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-areas:
+        'cep cep estado estado cidade cidade cidade'
+        'bairro bairro logradouro logradouro numero complemento complemento';
+
+    ${({ theme }) => theme.breakpoints.down('md')} {
+        grid-template-areas:
+            'cep' 'estado' 'cidade' 'bairro' 'logradouro'
+            'numero'
+            'complemento';
+    }
+`;
+
 export const PictureSelection = styled(BaseGrid)`
     grid-template-columns: 1fr;
     padding: 0;
