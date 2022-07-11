@@ -1,6 +1,5 @@
 import { LocationService } from './../services/LocationService';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CidadeInterface } from './../@types/EnderecoInterface';
 
 
@@ -10,11 +9,11 @@ export default function useCities(estado: string): CidadeInterface[]{
     useEffect(()=>{
         if(estado){
             setListaCidades([]);
-            LocationService.cidades(estado).then((ListaCidades) => {
-                listaCidades && setListaCidades
+            LocationService.cidades(estado).then((listaCidades) => {
+                listaCidades && setListaCidades(listaCidades)
             })
         }
-    }, []);
+    }, [estado]);
 
 
 

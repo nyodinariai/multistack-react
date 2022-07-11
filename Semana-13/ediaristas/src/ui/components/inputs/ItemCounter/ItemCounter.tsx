@@ -7,7 +7,7 @@ export interface ItemCounterProps {
     plural: string;
     counter: number;
     onInc: () => void;
-    onBack: () => void;
+    onDec: () => void;
 }
 
 const ItemCounter: React.FC<ItemCounterProps> = ({
@@ -15,11 +15,11 @@ const ItemCounter: React.FC<ItemCounterProps> = ({
     plural,
     counter = 0,
     onInc,
-    onBack,
+    onDec,
 }) => {
     return (
         <ItemCounterContainer>
-            <CircleButton onClick={onBack}>
+            <CircleButton onClick={onDec}>
                 <i className={'twf-minus'}></i>
             </CircleButton>
             <span>

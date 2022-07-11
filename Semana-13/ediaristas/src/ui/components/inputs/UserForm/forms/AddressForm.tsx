@@ -8,14 +8,8 @@ import { AddressData } from "../UserForm.styled"
 
 
 export const AddressForm = () => {
-const {
-    control,
-    errors,
-    estados,
-    opcoesCidades,
-    addressState,
-    register
-} = useAddressForm()
+    const { control, errors, estados, opcoesCidades, addressState, register } =
+        useAddressForm();
 
     return (
         <AddressData>
@@ -47,7 +41,7 @@ const {
                         style={{ gridArea: 'estado' }}
                     >
                         <MenuItem value="">
-                            <em>Nome</em>
+                            <em>None</em>
                         </MenuItem>
                         {estados.map((estado) => (
                             <MenuItem key={estado.sigla} value={estado.sigla}>
@@ -76,18 +70,14 @@ const {
                         loadingText={'Carregando cidades...'}
                         noOptionsText={'Nenhuma cidade com esse nome'}
                         renderInput={(params) => (
-                            <TextField
-                                label={'Logradouro'}
-                                style={{ gridArea: 'logradouro' }}
-                                {...inputProps}
-                                error={
-                                    errors?.endereco?.logradouro !== undefined
-                                }
-                                helperText={
-                                    errors?.endereco?.logradouro?.message
-                                }
-                            />
+                            <TextField 
+                                label={'Cidade'} {...params}
+                                InputLabelProps={{
+                                    required: false
+                                }}
+                                />
                         )}
+                        
                     />
                 )}
             />
@@ -142,4 +132,4 @@ const {
             />
         </AddressData>
     );
-}
+};
