@@ -1,13 +1,14 @@
 import { ServicoInterface } from './../../@types/ServivoInterface';
-import { NovaDiariaFormDataInterface, CadastroClienteFormDataInterface } from './../../@types/FormInterface';
+import { NovaDiariaFormDataInterface, CadastroClienteFormDataInterface, LoginFormDataInterface, PagamentoFormDataInterface } from './../../@types/FormInterface';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormSchemaService } from 'data/services/FormSchemaService';
 
 export default function useContratacao(){
-    const [step, setStep] = useState(2),
+    const [step, setStep] = useState(4),
         [hasLogin, setHasLogin] = useState(false),
+        [loginError, setLoginError] = useState(''),
         breadcrumbItems = ['Detalhes da Diaria', 'Identificação', 'Pagamento'],
         serviceForm = useForm<NovaDiariaFormDataInterface>({
             resolver: yupResolver(
@@ -22,6 +23,12 @@ export default function useContratacao(){
                     FormSchemaService.newContact()
                 )
             ),
+        }),
+        loginForm = useForm<LoginFormDataInterface>({
+            resolver: yupResolver(FormSchemaService.login()),
+        }),
+        paymentForm = useForm<PagamentoFormDataInterface>({
+            resolver: yupResolver(FormSchemaService.payment()),
         }),
         servicos: ServicoInterface[] = [
             {
@@ -54,6 +61,13 @@ export default function useContratacao(){
             console.log(data)
         }
 
+        function onLoginFormSubmit(data: LoginFormDataInterface){
+            console.log(data)
+        }
+        function onPaymentFormSubmit(data: PagamentoFormDataInterface){
+            console.log(data)
+        }
+
     return {
         step,
         setStep,
@@ -65,5 +79,12 @@ export default function useContratacao(){
         hasLogin,
         setHasLogin,
         onClientFormSubmit,
+        loginForm,
+        onLoginFormSubmit,
+        loginError,
+        paymentForm,
+        onPaymentFormSubmit
+
+    
     }
 }

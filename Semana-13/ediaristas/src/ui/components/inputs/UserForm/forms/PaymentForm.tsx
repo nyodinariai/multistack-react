@@ -4,7 +4,7 @@ import { PaymentData } from "../UserForm.styled";
 import TextField from '../../TextField/TextField';
 import TextFieldMask from "../../TextFieldMask/TextFieldMask";
 import { Typography } from "@material-ui/core";
-import { useEffect } from "@storybook/addons";
+import { useEffect } from "react";
 
 export const PaymentForm = () => {
     const {
