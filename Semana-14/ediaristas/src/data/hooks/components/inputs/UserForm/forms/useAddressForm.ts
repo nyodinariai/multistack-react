@@ -1,3 +1,5 @@
+import { UserContext } from './../../../../../contexts/UserContext';
+import { useContext } from 'react';
 import { useEffect } from 'react';
 import { LocationService } from './../../../../../services/LocationService';
 import { useFormContext } from 'react-hook-form';
@@ -5,7 +7,8 @@ import useCities from 'data/hooks/useCities.hook';
 import { useMemo } from 'react';
 
 export default function useAddressForm() {
-    const {
+    const {userAddress, user} = useContext(UserContext).userState,
+    {
             register,
             control,
             watch,
@@ -67,5 +70,7 @@ export default function useAddressForm() {
         addressCity,
         addressCep,
         register,
+        userAddress,
+        user
     };
 }
