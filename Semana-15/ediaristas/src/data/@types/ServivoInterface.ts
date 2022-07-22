@@ -5,7 +5,7 @@ export interface ServicoInterface{
     horas_banheiro: number;
     horas_cozinha: number;
     horas_outros: number;
-    horas_quartos: number;
+    horas_quarto: number;
     horas_quintal: number;
     horas_sala: number;
     porcentagem_comissao: number;

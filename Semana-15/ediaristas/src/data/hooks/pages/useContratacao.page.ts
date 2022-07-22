@@ -1,3 +1,6 @@
+import { DateService } from './../../services/DateService';
+import { ValidationService } from './../../services/ValidationService';
+import { useEffect } from 'react';
 import { DiariaInterface } from './../../@types/DiariaInterface';
 import { ServicoInterface } from './../../@types/ServivoInterface';
 import { NovaDiariaFormDataInterface, CadastroClienteFormDataInterface, LoginFormDataInterface, PagamentoFormDataInterface } from './../../@types/FormInterface';
@@ -37,6 +40,7 @@ export default function useContratacao(){
         servicos = useApi<ServicoInterface[]>('/api/servicos').data,
 
         dadosFaxina = serviceForm.watch('faxina'),
+        
         tipoLimpeza = useMemo<ServicoInterface>(() => {
             if(servicos && dadosFaxina?.servico){
                 const selectedService = servicos.find((servico) => servico.id === dadosFaxina?.servico)
@@ -47,9 +51,30 @@ export default function useContratacao(){
             return {} as ServicoInterface
         }, [servicos, dadosFaxina]),
 
-        totalTime = useMemo<Number>( () => {
+        totalTime = useMemo<number>( () => {
             return calcularTempoServico(dadosFaxina, tipoLimpeza)
-        }, [dadosFaxina, tipoLimpeza])
+        }, [dadosFaxina, tipoLimpeza]);
+
+        useEffect(() => {
+            if(
+                dadosFaxina && 
+                ValidationService.hora(dadosFaxina.hora_inicio) && 
+                totalTime >= 0
+                ){
+                serviceForm.setValue(
+                    'faxina.hora_termino', 
+                    DateService.addHours(
+                        dadosFaxina?.hora_inicio as string, totalTime
+                        ),
+                        {
+                            shouldValidate: true
+                        }
+                    )
+            }else{
+                serviceForm.setValue('faxina.hora_termino','');
+            }
+        }, [dadosFaxina?.hora_inicio, totalTime])
+
 
         function onServiceFormSubmit(data: NovaDiariaFormDataInterface){
             console.log(data)
@@ -71,10 +96,10 @@ export default function useContratacao(){
         ){
             let total = 0;
             if(dadosFaxina && tipoLimpeza){
-                total += tipoLimpeza.horas_banheiro * dadosFaxina.quantidade_banheiros
-                total += tipoLimpeza.horas_cozinha * dadosFaxina.quantidade_cozinhas
-                total += tipoLimpeza.horas_outros * dadosFaxina.quantidade_outros
-                total += tipoLimpeza.horas_quartos * dadosFaxina.quantidade_quartos
+                total += tipoLimpeza.horas_banheiro * dadosFaxina.quantidade_banheiros;
+                total += tipoLimpeza.horas_cozinha * dadosFaxina.quantidade_cozinhas;
+                total += tipoLimpeza.horas_outros * dadosFaxina.quantidade_outros;
+                total += tipoLimpeza.horas_quarto * dadosFaxina.quantidade_quartos;
                 total += tipoLimpeza.horas_quintal * dadosFaxina.quantidade_quintais;
                 total += tipoLimpeza.horas_sala * dadosFaxina.quantidade_salas;
             }
