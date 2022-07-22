@@ -49,11 +49,20 @@ export default function useContratacao(){
                 }
             }
             return {} as ServicoInterface
-        }, [servicos, dadosFaxina]),
+        }, [servicos, dadosFaxina?.servico]),
 
         totalTime = useMemo<number>( () => {
             return calcularTempoServico(dadosFaxina, tipoLimpeza)
-        }, [dadosFaxina, tipoLimpeza]);
+        }, [
+            dadosFaxina, 
+            tipoLimpeza,
+            dadosFaxina?.quantidade_banheiros,
+            dadosFaxina?.quantidade_cozinhas,
+            dadosFaxina?.quantidade_outros,
+            dadosFaxina?.quantidade_quartos,
+            dadosFaxina?.quantidade_quintais,
+            dadosFaxina?.quantidade_salas
+            ]);
 
         useEffect(() => {
             if(
