@@ -27,6 +27,8 @@ const Contratacao: React.FC = () => {
         clientForm, 
         onServiceFormSubmit, 
         servicos, 
+        podemosAtender,
+        tamanhoCasa,
         hasLogin, 
         setHasLogin, 
         onClientFormSubmit, 
@@ -90,7 +92,7 @@ const Contratacao: React.FC = () => {
                                 )}
                                 hidden={step !== 1}
                             >
-                                <DetalhesServico servicos={servicos} />
+                                <DetalhesServico servicos={servicos} comodos={tamanhoCasa.length} podemosAtender={podemosAtender}/>
                             </form>
                         </FormProvider>
 

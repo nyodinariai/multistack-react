@@ -61,7 +61,7 @@ export const LocationService = {
     async cep(cep: string): Promise <CepResponse | undefined>{
         try {
             const response = await ApiService.request<CepResponse>({
-                url:'api/enderecos?cep' + cep.replace(/\D/g, '')
+                url:'api/enderecos?cep=' + cep.replace(/\D/g, '')
             })
 
             return response.data;

@@ -1,3 +1,7 @@
+import { ApiService } from 'data/services/ApiService';
+import { ExternalServiceContext } from './../../contexts/ExternalServicesContext';
+import { useContext } from 'react';
+import { houseParts } from './../../../ui/partials/encontrar-diarista/_detalhes-servico';
 import { DateService } from './../../services/DateService';
 import { ValidationService } from './../../services/ValidationService';
 import { useEffect } from 'react';
@@ -10,6 +14,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { FormSchemaService } from 'data/services/FormSchemaService';
 import useSWR from 'swr';
 import useApi from '../useApi.hook';
+import { linksResolver } from 'data/services/ApiService';
 
 export default function useContratacao(){
       
@@ -37,9 +42,12 @@ export default function useContratacao(){
         paymentForm = useForm<PagamentoFormDataInterface>({
             resolver: yupResolver(FormSchemaService.payment()),
         }),
+        { externalServiceState } = useContext(ExternalServiceContext),
         servicos = useApi<ServicoInterface[]>('/api/servicos').data,
 
         dadosFaxina = serviceForm.watch('faxina'),
+        cepFaxina = serviceForm.watch('endereco.cep'),
+        [podemosAtender, setPodemosAtender] = useState(true),
         
         tipoLimpeza = useMemo<ServicoInterface>(() => {
             if(servicos && dadosFaxina?.servico){
@@ -50,6 +58,10 @@ export default function useContratacao(){
             }
             return {} as ServicoInterface
         }, [servicos, dadosFaxina?.servico]),
+
+        tamanhoCasa = useMemo<string[]>(() => {
+            return listarComodos(dadosFaxina);
+        }, [tipoLimpeza, dadosFaxina]),
 
         totalTime = useMemo<number>( () => {
             return calcularTempoServico(dadosFaxina, tipoLimpeza)
@@ -84,6 +96,27 @@ export default function useContratacao(){
             }
         }, [dadosFaxina?.hora_inicio, totalTime])
 
+        useEffect(() => {
+            const cep = ((cepFaxina as string) ||  '' ).replace(/\D/g, '');
+            if(ValidationService.cep(cep)){
+                
+
+                const linkDisponibilidade = linksResolver(
+                    externalServiceState.externalServices, 'verificar_disponibilidade_atendimento'
+                );
+
+                if(linkDisponibilidade){
+                    ApiService.request<{ disponibilidade : boolean}>({
+                        url: linkDisponibilidade.uri + '?cep='+ cep,
+                        method: linkDisponibilidade.type
+                    })
+                    .then((response) => {setPodemosAtender(response.data.disponibilidade)}).catch((_error) => setPodemosAtender(false))
+                }
+            } else {
+                setPodemosAtender(true)
+            }
+
+        }, [cepFaxina])
 
         function onServiceFormSubmit(data: NovaDiariaFormDataInterface){
             console.log(data)
@@ -99,6 +132,26 @@ export default function useContratacao(){
         function onPaymentFormSubmit(data: PagamentoFormDataInterface){
             console.log(data)
         }
+
+        
+        function listarComodos(dadosFaxina: DiariaInterface): string[] {
+            const comodos: string[] = [];
+            if(dadosFaxina){
+                houseParts.forEach((housePart) => {
+                    const total = dadosFaxina[
+                        housePart.name as keyof DiariaInterface
+                    ] as number;
+                    if(total > 0){
+                        const nome = total > 1 ? housePart.plural : housePart.singular;
+                        comodos.push(`${total} ${nome}`)
+                    }
+                })
+            }
+
+
+            return comodos
+        }
+
         function calcularTempoServico(
             dadosFaxina: DiariaInterface,
             tipoLimpeza: ServicoInterface
@@ -116,6 +169,7 @@ export default function useContratacao(){
             return total;
         }
 
+
     return {
         step,
         setStep,
@@ -124,6 +178,8 @@ export default function useContratacao(){
         clientForm,
         onServiceFormSubmit,
         servicos,
+        podemosAtender,
+        tamanhoCasa,
         hasLogin,
         setHasLogin,
         onClientFormSubmit,

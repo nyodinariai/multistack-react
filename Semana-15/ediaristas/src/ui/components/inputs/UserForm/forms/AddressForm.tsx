@@ -8,8 +8,16 @@ import { AddressData } from "../UserForm.styled"
 
 
 export const AddressForm = () => {
-    const { control, errors, estados, opcoesCidades, addressState, register, user, userAddress } =
-        useAddressForm();
+    const {
+        user,
+        userAddress,
+        control,
+        errors,
+        estados,
+        opcoesCidades,
+        addressState,
+        register,
+    } = useAddressForm();
 
     return (
         <AddressData>
