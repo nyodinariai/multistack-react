@@ -208,7 +208,7 @@ const DetalhesServico: React.FC<DetalhesServicoProps> = ({servicos = [], comodos
 
             {!podemosAtender && (
                 <Typography color={'error'} sx={{ pb: 2 }} align={'center'}>
-                    Infelizmento ainda não atendemos na sua região
+                    Infelizmente ainda não atendemos na sua região
                 </Typography>
             )}
 

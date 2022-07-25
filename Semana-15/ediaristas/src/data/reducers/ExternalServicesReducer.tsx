@@ -18,7 +18,10 @@ export interface ExternalServiceReducerInterface {
     externalServiceDispatch: React.Dispatch<ExternalServicesActionType>;
 }
 
-const reducer = (state: InitialStateType, action: ExternalServicesActionType): InitialStateType => {
+const reducer = (
+    state: InitialStateType, 
+    action: ExternalServicesActionType
+    ): InitialStateType => {
     const nextState = produce(state, (draftState) => {
         switch(action.type){
             case 'UPDATE':

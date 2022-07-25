@@ -23,5 +23,13 @@ declare const Pagarme:PagarmeInterface;
 interface PagarmeInterface{
     validate: ({card: CardInterface}) => {
         card: CardValidadeInterface
+    };
+    client: PagarmeClientInterface;
+}
+
+interface PagarmeClientInterface{
+    connect: ({encryption_key: string}) => Promise<PagarmeClientInterface>
+    security: {
+        encrypt: (card: CardInterface) => Promise<string>
     }
 }

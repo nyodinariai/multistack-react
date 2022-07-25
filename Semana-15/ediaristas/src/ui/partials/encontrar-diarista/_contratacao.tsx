@@ -14,30 +14,41 @@ import CadastroCliente, { LoginCliente } from './_cadastro-cliente';
 import InformacoesPagamento from './_informacoes-pagamento';
 import { Box } from '@material-ui/system';
 import Link from 'ui/components/navigation/Link/Link';
+import { useEffect } from 'react';
+import { BrowserService } from 'data/services/BrowserService';
+import { TextFormatService } from 'data/services/TextFormatService';
+import DataList from 'ui/components/data-display/DataList/DataList';
 // import { Component } from './_contratacao.styled';
 
 
 const Contratacao: React.FC = () => { 
     const isMobile = useIsMobile(),
-    { 
-        step, 
-        setStep,
-        breadcrumbItems, 
-        serviceForm, 
-        clientForm, 
-        onServiceFormSubmit, 
-        servicos, 
-        podemosAtender,
-        tamanhoCasa,
-        hasLogin, 
-        setHasLogin, 
-        onClientFormSubmit, 
-        loginForm, 
-        onLoginFormSubmit, 
-        loginError,
-        paymentForm,
-        onPaymentFormSubmit
-            } = useContratacao();
+        {
+            step,
+            setStep,
+            breadcrumbItems,
+            tipoLimpeza,
+            totalPrice,
+            tamanhoCasa,
+            podemosAtender,
+            serviceForm,
+            clientForm,
+            paymentForm,
+            loginForm,
+            onServiceFormSubmit,
+            onClientFormSubmit,
+            onLoginFormSubmit,
+            onPaymentFormSubmit,
+            servicos,
+            hasLogin,
+            setHasLogin,
+            loginError,
+        } = useContratacao(),
+        dataAtendimento = serviceForm.watch('faxina.data_atendimento');
+    useEffect(() => {
+        BrowserService.scrollToTop();
+    }, [step]);
+           
 
             if(!servicos || servicos.length < 1){
                 return (
@@ -55,6 +66,30 @@ const Contratacao: React.FC = () => {
                 selected={breadcrumbItems[step - 1]}
                 items={breadcrumbItems}
             />
+
+            {isMobile && [2, 3].includes(step) && (
+                <DataList
+                    header={
+                        <Typography
+                            color={'primary'}
+                            sx={{ fontWeight: 'thin' }}
+                        >
+                            O valor total do serviço é:{' '}
+                            {TextFormatService.currency(totalPrice)}
+                        </Typography>
+                    }
+                    body={
+                        <>
+                            {tipoLimpeza?.nome}
+                            <br />
+                            Tamanho: {tamanhoCasa.join(', ')}
+                            <br />
+                            Data: {dataAtendimento}
+                        </>
+                    }
+                />
+            )}
+
             {step === 1 && (
                 <PageTitle title={'Nos conte um pouco sobre o serviço!'} />
             )}
@@ -82,6 +117,15 @@ const Contratacao: React.FC = () => {
                 />
             )}
 
+            {step === 3 && (
+                <PageTitle
+                    title={'Informe os dados do cartão para pagamento'}
+                    subtitle={
+                        'Será feita uma reserva, mas o valor só será descontado quando você confirmar a presença do/da diarista'
+                    }
+                />
+            )}
+
             <UserFormContainer>
                 <PageFormContainer fullWidth={step === 4}>
                     <Paper sx={{ p: 4 }}>
@@ -92,18 +136,11 @@ const Contratacao: React.FC = () => {
                                 )}
                                 hidden={step !== 1}
                             >
-                                <DetalhesServico servicos={servicos} comodos={tamanhoCasa.length} podemosAtender={podemosAtender}/>
-                            </form>
-                        </FormProvider>
-
-                        <FormProvider {...clientForm}>
-                            <form
-                                onSubmit={clientForm.handleSubmit(
-                                    onClientFormSubmit
-                                )}
-                                hidden={step !== 2 || hasLogin}
-                            >
-                                <CadastroCliente onBack={() => setStep(1)} />
+                                <DetalhesServico
+                                    servicos={servicos}
+                                    comodos={tamanhoCasa.length}
+                                    podemosAtender={podemosAtender}
+                                />
                             </form>
                         </FormProvider>
 
@@ -129,6 +166,17 @@ const Contratacao: React.FC = () => {
                             </FormProvider>
                         )}
 
+                        <FormProvider {...clientForm}>
+                            <form
+                                onSubmit={clientForm.handleSubmit(
+                                    onClientFormSubmit
+                                )}
+                                hidden={step !== 2 || hasLogin}
+                            >
+                                <CadastroCliente onBack={() => setStep(1)} />
+                            </form>
+                        </FormProvider>
+
                         {step === 3 && (
                             <FormProvider {...paymentForm}>
                                 <form
@@ -150,11 +198,19 @@ const Contratacao: React.FC = () => {
                                 </Typography>
                                 <Typography
                                     color={'secondary'}
-                                    sx={{ fontSize: '22px', pb:3 }}
+                                    sx={{ fontSize: '22px', pb: 3 }}
                                 >
                                     Pagamento realizado com sucesso
                                 </Typography>
-                                <Typography sx={{maxWidth: '410px', mb:3, mx:'auto'}}variant={'body2'}color={'textSecondary'}>
+                                <Typography
+                                    sx={{
+                                        maxWidth: '410px',
+                                        mb: 3,
+                                        mx: 'auto',
+                                    }}
+                                    variant={'body2'}
+                                    color={'textSecondary'}
+                                >
                                     Sua diária foi paga com sucesso! Já estamos
                                     procurando o(a) melhor profissional para
                                     atender a sua residência. Caso nenhum(a)
@@ -164,37 +220,46 @@ const Contratacao: React.FC = () => {
                                     a sua diária sem nenhuma multa até 24 horas
                                     antes da hora do agendamento.
                                 </Typography>
-                                <Link href={'/diarias'} Component={Button} mui={{color: 'secondary', variant:'contained'}}>
+                                <Link
+                                    href={'/diarias'}
+                                    Component={Button}
+                                    mui={{
+                                        color: 'secondary',
+                                        variant: 'contained',
+                                    }}
+                                >
                                     Ir para minhas diárias
                                 </Link>
                             </Box>
                         )}
                     </Paper>
 
-                    {!isMobile && step !== 4 &&(<SideInformation
-                        title={'Detalhes'}
-                        items={[
-                            {
-                                title: 'Tipo',
-                                description: [''],
-                                icon: 'twf-check-circle',
-                            },
-                            {
-                                title: 'Tamanho',
-                                description: [''],
-                                icon: 'twf-check-circle',
-                            },
-                            {
-                                title: 'Data',
-                                description: [''],
-                                icon: 'twf-check-circle',
-                            },
-                        ]}
-                        footer={{
-                            text: 'R$80,00',
-                            icon: 'twf-credit-card',
-                        }}
-                    />)}
+                    {!isMobile && step !== 4 && (
+                        <SideInformation
+                            title={'Detalhes'}
+                            items={[
+                                {
+                                    title: 'Tipo',
+                                    description: [tipoLimpeza?.nome],
+                                    icon: 'twf-check-circle',
+                                },
+                                {
+                                    title: 'Tamanho',
+                                    description: tamanhoCasa,
+                                    icon: 'twf-check-circle',
+                                },
+                                {
+                                    title: 'Data',
+                                    description: [dataAtendimento as string],
+                                    icon: 'twf-check-circle',
+                                },
+                            ]}
+                            footer={{
+                                text: TextFormatService.currency(totalPrice),
+                                icon: 'twf-credit-card',
+                            }}
+                        />
+                    )}
                 </PageFormContainer>
             </UserFormContainer>
         </div>

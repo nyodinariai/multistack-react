@@ -120,7 +120,7 @@ export const FormSchemaService = {
                                     card_holder_name: '',
                                     card_cvv: value as string,
                                     card_expiration_date: '',
-                                }).card_expiration_date;
+                                }).card_cvv;
                             }
                         ),
                 }),
@@ -130,6 +130,7 @@ export const FormSchemaService = {
 
     detalhesServico(){
         return yup.object().shape({
+            faxina: yup.object().shape({
             data_atendimento: yup
                 .date()
                 .transform(DateService.transformDate)
@@ -181,7 +182,8 @@ export const FormSchemaService = {
                         return +horaTermino - +horaInicio <= 8;
                     }        
                 ),
-        })
+        }),
+    })
         .defined();
     },
     login(){
