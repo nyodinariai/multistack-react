@@ -1,5 +1,5 @@
 import { Typography, Divider, Tooltip, Button, Container } from '@material-ui/core';
-import { ServicoInterface } from 'data/@types/ServivoInterface';
+import { ServicoInterface } from 'data/@types/ServicoInterface';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import ItemCounter from 'ui/components/inputs/ItemCounter/ItemCounter';

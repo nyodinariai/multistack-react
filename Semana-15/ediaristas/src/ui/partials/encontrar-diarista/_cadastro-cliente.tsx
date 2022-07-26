@@ -5,7 +5,8 @@ import { LoginButtonsContainer } from './_cadastro-cliente.styled';
 // import { Component } from './_cadastro-cliente.styled';
 
 
-const CadastroCliente: React.FC<{onBack: () => void}> = ({onBack}) => { return (
+const CadastroCliente: React.FC<{onBack: () => void}> = ({onBack}) => { 
+    return (
     <>
         <Typography sx={{ fontWeight: 'bold', pb: 2 }}>
             Dados Pessoais

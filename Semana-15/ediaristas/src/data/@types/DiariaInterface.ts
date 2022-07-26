@@ -1,7 +1,7 @@
 import { UserInterface } from 'data/@types/UserInterface';
 import { ApiLinksInterface } from './ApiLinksInterface';
-export interface DiariaInterface{
-    id?: number
+export interface DiariaInterface {
+    id?: number;
     cliente?: UserInterface;
     links?: ApiLinksInterface[];
     data_atendimento: string | Date;
@@ -15,8 +15,8 @@ export interface DiariaInterface{
     complemento: string;
     cep: string;
     cidade: string;
-    estado: string
-    numero: string
+    estado: string;
+    numero: string;
     codigo_ibge?: number;
 
     quantidade_quartos: number;

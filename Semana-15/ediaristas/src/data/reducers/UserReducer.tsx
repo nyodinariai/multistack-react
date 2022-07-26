@@ -1,7 +1,13 @@
-import React, { useReducer, useEffect } from "react";
-import produce from "immer";
-import { UserInterface, UserType } from "data/@types/UserInterface";
-import { CidadeInterface, EnderecoInterface } from "data/@types/EnderecoInterface";
+import React, { useReducer, useEffect } from 'react';
+import { ApiLinksInterface } from 'data/@types/ApiLinksInterface';
+import produce from 'immer';
+import { ApiService } from 'data/services/ApiService';
+import { UserInterface, UserType } from 'data/@types/UserInterface';
+import {
+    CidadeInterface,
+    EnderecoInterface,
+} from 'data/@types/EnderecoInterface';
+import { LoginService } from 'data/services/LoginService';
 
 export const initialState = {
     user: {
@@ -15,46 +21,47 @@ export const initialState = {
         reputacao: 0,
         chave_pix: '',
     } as UserInterface,
-    addressList:[] as CidadeInterface[],
+    addressList: [] as CidadeInterface[],
     userAddress: {
         logradouro: '',
         bairro: '',
         complemento: '',
         cep: '',
-        cidade:'',
-        estado:'',
+        cidade: '',
+        estado: '',
         numero: '',
     } as EnderecoInterface,
     isLogging: false,
-}
+};
 
 export type InitialStateType = typeof initialState;
 
-type UserAction = 
+type UserAction =
     | 'SET_USER'
     | 'SET_LOGGING'
     | 'SET_ADDRESS_LIST'
     | 'SET_USER_ADDRESS';
 
-
 export type UserActionType = {
     type: UserAction;
     payload?: unknown;
-}
+};
 
 export interface UserReducerInterface {
     userState: InitialStateType;
     userDispatch: React.Dispatch<UserActionType>;
 }
 
-const reducer = (state: InitialStateType, action: UserActionType): InitialStateType => {
+const reducer = (
+    state: InitialStateType,
+    action: UserActionType
+): InitialStateType => {
     const nextState = produce(state, (draftState) => {
-        switch(action.type){
+        switch (action.type) {
             case 'SET_USER':
                 draftState.user = action.payload as UserInterface;
                 draftState.isLogging = false;
                 break;
-
             case 'SET_ADDRESS_LIST':
                 draftState.addressList = action.payload as CidadeInterface[];
                 break;
@@ -65,17 +72,32 @@ const reducer = (state: InitialStateType, action: UserActionType): InitialStateT
                 draftState.isLogging = action.payload as boolean;
                 break;
         }
-    })
+    });
 
     return nextState;
-}
+};
 
-export function useUserReducer(): UserReducerInterface{
-    const [state, dispatch] = useReducer(reducer, initialState)
+export function useUserReducer(): UserReducerInterface {
+    const [state, dispatch] = useReducer(reducer, initialState);
 
+    useEffect(() => {
+        getUser();
+    }, [state.user.id]);
 
-    return{
+    async function getUser() {
+        try {
+            dispatch({ type: 'SET_LOGGING', payload: true });
+            const user = await LoginService.getUser();
+            if (user) {
+                dispatch({ type: 'SET_USER', payload: user });
+            } else {
+                dispatch({ type: 'SET_LOGGING', payload: false });
+            }
+        } catch (error) {}
+    }
+
+    return {
         userState: state,
         userDispatch: dispatch,
-    }
+    };
 }

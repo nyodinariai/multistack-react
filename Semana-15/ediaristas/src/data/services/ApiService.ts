@@ -38,10 +38,13 @@ async function handleTokenRefresh(error: { config: AxiosRequestConfig }){
             LocalStorage.set('token', data.access);
             LocalStorage.set('token_refresh', data.refresh);
 
-            ApiService.defaults.headers.Authorization = 'Bearer ' + data.access
+            const AUTH_TOKEN = 'Bearer ' + data.access;
 
-            error.config.headers.Authorization =
-                ApiService.defaults.headers.Authorization;
+            ApiService.defaults.headers.common['Authorization'] = AUTH_TOKEN
+
+            error.config.headers = {
+                'Authorization' : ApiService.defaults.headers.common['Authorization']
+            }
 
             return ApiService(error.config);
         } catch (err) {

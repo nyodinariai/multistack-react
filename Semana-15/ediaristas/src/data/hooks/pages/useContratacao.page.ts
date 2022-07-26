@@ -8,7 +8,7 @@ import {
     LoginFormDataInterface,
     PagamentoFormDataInterface,
 } from 'data/@types/FormInterface'
-import { ServicoInterface } from 'data/@types/ServivoInterface';
+import { ServicoInterface } from 'data/@types/ServicoInterface';
 import useApi, { useApiHateoas } from '../useApi.hook';
 import { DiariaInterface } from 'data/@types/DiariaInterface';
 import { ValidationService } from 'data/services/ValidationService';
@@ -143,7 +143,7 @@ export default function useContratacao() {
     }, [cepFaxina]);
 
     function onServiceFormSubmit(data: NovaDiariaFormDataInterface) {
-        console.log(99991)
+        
         if (userState.user.nome_completo) {
             criarDiaria(userState.user);
         } else {
@@ -187,9 +187,10 @@ export default function useContratacao() {
             }
         }
     }
+
     async function onLoginFormSubmit(data: { login: LoginFormDataInterface }) {
-        const loginSucess = await login(data.login);
-        if (loginSucess) {
+        const loginSuccess = await login(data.login);
+        if (loginSuccess) {
             const user = await LoginService.getUser();
             if (user) {
                 criarDiaria(user);
@@ -203,7 +204,6 @@ export default function useContratacao() {
         user?: UserInterface
     ): Promise<boolean> {
         const loginSuccess = await LoginService.login(credentials);
-
         if (loginSuccess) {
             if (!user) {
                 user = await LoginService.getUser();
@@ -212,7 +212,6 @@ export default function useContratacao() {
         } else {
             setLoginError('E-mail e/ou Senha inválidos');
         }
-
         return loginSuccess;
     }
 
@@ -344,20 +343,20 @@ export default function useContratacao() {
         step,
         setStep,
         breadcrumbItems,
-        tipoLimpeza,
-        totalPrice,
-        tamanhoCasa,
-        podemosAtender,
         serviceForm,
         clientForm,
         paymentForm,
         loginForm,
         onServiceFormSubmit,
         onClientFormSubmit,
-        onLoginFormSubmit,
         onPaymentFormSubmit,
+        onLoginFormSubmit,
         servicos,
+        podemosAtender,
         hasLogin,
+        tipoLimpeza,
+        totalPrice,
+        tamanhoCasa,
         setHasLogin,
         loginError,
     };

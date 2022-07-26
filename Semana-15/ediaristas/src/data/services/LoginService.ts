@@ -1,6 +1,6 @@
 import { LocalStorage } from './StorageService';
 import { ApiService } from './ApiService';
-import { LoginFormDataInterface } from './../@types/FormInterface';
+import { LoginFormDataInterface } from 'data/@types/FormInterface';
 import { UserInterface } from 'data/@types/UserInterface';
 
 export const LoginService = {
@@ -14,7 +14,7 @@ export const LoginService = {
             LocalStorage.set('token', data.access);
             LocalStorage.set('token_refresh', data.refresh);
 
-            ApiService.defaults.headers['Authorization'] = 'Bearer' + data.access
+            ApiService.defaults.headers.common['Authorization'] = 'Bearer ' + data.access
 
             return true;
         } catch (error) {
@@ -32,7 +32,7 @@ export const LoginService = {
         const token = LocalStorage.get('token', '');
 
         if(token){
-            ApiService.defaults.headers['Authorization'] = 'Bearer ' + token;
+            ApiService.defaults.headers.common['Authorization'] = 'Bearer ' + token;
             return (await ApiService.get<UserInterface>('/api/me')).data
         }
 
