@@ -7,6 +7,7 @@ import {
     CadastroClienteFormDataInterface,
     LoginFormDataInterface,
     PagamentoFormDataInterface,
+    CredenciaisInterface,
 } from 'data/@types/FormInterface'
 import { ServicoInterface } from 'data/@types/ServicoInterface';
 import useApi, { useApiHateoas } from '../useApi.hook';
@@ -50,7 +51,7 @@ export default function useContratacao() {
         paymentForm = useForm<PagamentoFormDataInterface>({
             resolver: yupResolver(FormSchemaService.payment()),
         }),
-        loginForm = useForm<LoginFormDataInterface>({
+        loginForm = useForm<LoginFormDataInterface<CredenciaisInterface>>({
             resolver: yupResolver(FormSchemaService.login()),
         }),
         { userState, userDispatch } = useContext(UserContext),
@@ -188,7 +189,7 @@ export default function useContratacao() {
         }
     }
 
-    async function onLoginFormSubmit(data: { login: LoginFormDataInterface }) {
+    async function onLoginFormSubmit(data: LoginFormDataInterface<CredenciaisInterface> ) {
         const loginSuccess = await login(data.login);
         if (loginSuccess) {
             const user = await LoginService.getUser();
@@ -200,7 +201,7 @@ export default function useContratacao() {
     }
 
     async function login(
-        credentials: LoginFormDataInterface,
+        credentials: CredenciaisInterface,
         user?: UserInterface
     ): Promise<boolean> {
         const loginSuccess = await LoginService.login(credentials);

@@ -7,7 +7,11 @@ export interface NovaDiariaFormDataInterface{
     faxina: DiariaInterface
 }
 
-export interface LoginFormDataInterface{
+export interface LoginFormDataInterface<T>{
+    login: T;
+}
+
+export interface CredenciaisInterface{
     email: string;
     password: string;
 }
