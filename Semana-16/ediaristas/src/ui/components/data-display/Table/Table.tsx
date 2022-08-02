@@ -16,18 +16,21 @@ const Table: TableComponentType = ({data, ...props}) =>{
     return (
         <TablePaper>
             <TableContainerStyled>
-                <TableHeadStyled>
-                    <TableRowStyled>
-                        {props.header.map((title, index) => (
-                        <TableCellStyled key={index}>{title}</TableCellStyled>
-                        ))}
-                    </TableRowStyled>
-                </TableHeadStyled>
+                <TableStyled>
+                    <TableHeadStyled>
+                        <TableRowStyled>
+                            {props.header.map((title, index) => (
+                                <TableCellStyled key={index}>
+                                    {title}
+                                </TableCellStyled>
+                            ))}
+                        </TableRowStyled>
+                    </TableHeadStyled>
 
-                <TableBodyStyled>
-                    {data.map(props.rowElement)}
-
-                </TableBodyStyled>
+                    <TableBodyStyled>
+                        {data.map(props.rowElement)}
+                    </TableBodyStyled>
+                </TableStyled>
             </TableContainerStyled>
         </TablePaper>
     );
@@ -37,3 +40,4 @@ export default Table;
 export const TableRow = TableRowStyled;
 export const TableCell = TableCellStyled;
 export const TablePagination = TablePaginationStyled
+
