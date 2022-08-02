@@ -1,9 +1,22 @@
-import PageTitle from "ui/components/data-display/PageTitle/PageTitle";
+import React from "react";
+import { GetStaticProps } from "next";
+import { DiariaProvider } from "data/contexts/DiariasContext";
+import MinhasDiarias from "@partials/diarias/_minhas-diarias";
 
-export default function Diarias(){
+export const getStaticProps: GetStaticProps = async () => {
+    return {
+        props: {
+            title: 'Diarias',
+        }
+    }
+}
+
+const Diarias: React.FC = () => {
     return (
-        <>
-            <PageTitle title="Diarias" />
-        </>
+        <DiariaProvider>
+            <MinhasDiarias></MinhasDiarias>
+        </DiariaProvider>
     )
 }
+
+export default Diarias;
