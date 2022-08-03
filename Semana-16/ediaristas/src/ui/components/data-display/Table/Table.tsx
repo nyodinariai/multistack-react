@@ -1,4 +1,4 @@
-import React from "react";
+import React,  {useMemo } from "react";
 //import { } from '@material-ui/core'
 import { TablePaper, TableStyled, TableContainerStyled, TableHeadStyled, TableRowStyled, TableCellStyled, TableBodyStyled, TablePaginationStyled } from './Table.styled'
 
@@ -6,12 +6,26 @@ export interface TableProps<T>{
     header: string[];
     data: T[];
     rowElement: (item: T, index: number) => React.ReactNode;
+    itemsPerPage?: number;
+    currentPage?:number;
 }
 
 export type TableComponentType = <T>(props:TableProps<T>) => React.ReactElement; 
 
 
-const Table: TableComponentType = ({data, ...props}) =>{
+const Table: TableComponentType = ({data, itemsPerPage, currentPage, ...props}) =>{
+
+
+    const tableData = useMemo<typeof data>(() => {
+        if(itemsPerPage !== undefined && currentPage !== undefined){
+            return data.slice(
+                (currentPage - 1) * itemsPerPage,
+                (currentPage - 1) * itemsPerPage + itemsPerPage
+            );
+        }
+        
+        return data;
+    }, [data, itemsPerPage, currentPage])
 
     return (
         <TablePaper>

@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Table, { TableCell, TableRow } from './Table';
+import Table, { TableCell, TablePagination, TableRow } from './Table';
 
 export default {
     title: 'data-display/Table',
@@ -17,7 +17,10 @@ interface TemplatePropsInterface{
 }
 
     const Template: ComponentStory<typeof Table> = (args) => (
-        <Table {...args} />
+        <>
+            <Table {...args} />
+            <TablePagination count={10}/>
+        </>
     );
 
 export const Default = Template.bind({});
@@ -57,4 +60,5 @@ Default.args = {
             </TableRow>
         );
     }
+
 };
