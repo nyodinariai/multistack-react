@@ -144,7 +144,7 @@ export default function useContratacao() {
     }, [cepFaxina]);
 
     function onServiceFormSubmit(data: NovaDiariaFormDataInterface) {
-        
+        console.log(data);
         if (userState.user.nome_completo) {
             criarDiaria(userState.user);
         } else {
@@ -307,7 +307,7 @@ export default function useContratacao() {
             const serviceData = serviceForm.getValues();
             ApiServiceHateoas(
                 user.links,
-                'cadastra_diaria',
+                'cadastrar_diaria',
                 async (request) => {
                     try {
                         const novaDiaria = (
@@ -334,7 +334,9 @@ export default function useContratacao() {
                             setStep(3);
                             setNovaDiaria(novaDiaria);
                         }
-                    } catch (error) {}
+                    } catch (error) {
+                     
+                    }
                 }
             );
         }

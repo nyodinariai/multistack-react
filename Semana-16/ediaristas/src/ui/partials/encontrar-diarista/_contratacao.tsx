@@ -45,9 +45,10 @@ const Contratacao: React.FC = () => {
             loginError,
         } = useContratacao(),
         dataAtendimento = serviceForm.watch('faxina.data_atendimento');
-    useEffect(() => {
-        BrowserService.scrollToTop();
-    }, [step]);
+    
+        useEffect(() => {
+            BrowserService.scrollToTop();
+        }, [step]);
            
 
             if(!servicos || servicos.length < 1){

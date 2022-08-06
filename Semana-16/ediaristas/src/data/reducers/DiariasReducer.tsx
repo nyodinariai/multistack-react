@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useReducer } from 'react';
 import { DiariaInterface } from "data/@types/DiariaInterface";
 import produce from "immer";
-import { useReducer } from "@storybook/addons";
 import { UserContext } from "data/contexts/UserContext";
 import { useApiHateoas } from "data/hooks/useApi.hook";
 
@@ -59,4 +58,5 @@ export function useDiariaReducer(): DiariaReducerInterface{
         diariaState: state,
         diariaDispatch: dispatch,
     }
+
 }

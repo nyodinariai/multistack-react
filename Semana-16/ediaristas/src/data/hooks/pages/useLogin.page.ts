@@ -3,13 +3,13 @@ import { LoginService } from './../../services/LoginService';
 import { UserContext } from './../../contexts/UserContext';
 import { useContext } from 'react';
 import { useState } from 'react';
-import { LoginFormDataInterface } from './../../@types/FormInterface';
+import { CredenciaisInterface, LoginFormDataInterface } from './../../@types/FormInterface';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormSchemaService } from 'data/services/FormSchemaService';
 
 export default function useLogin(){
-    const formMethods = useForm<{login: LoginFormDataInterface}>({
+    const formMethods = useForm<{login: LoginFormDataInterface<CredenciaisInterface>}>({
         resolver: yupResolver(FormSchemaService.login()),
     });
 
@@ -18,7 +18,7 @@ export default function useLogin(){
     {externalServiceState} = useContext(ExternalServiceContext)
 
 
-    async function onSubmit(data: {login: LoginFormDataInterface}){
+    async function onSubmit(data: {login: LoginFormDataInterface<CredenciaisInterface>}){
         setErrorMessage('');
         const loginSuccess = await LoginService.login(data.login)
 

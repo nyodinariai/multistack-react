@@ -42,7 +42,7 @@ const Table: TableComponentType = ({data, itemsPerPage, currentPage, ...props}) 
                     </TableHeadStyled>
 
                     <TableBodyStyled>
-                        {data.map(props.rowElement)}
+                        {tableData.map(props.rowElement)}
                     </TableBodyStyled>
                 </TableStyled>
             </TableContainerStyled>

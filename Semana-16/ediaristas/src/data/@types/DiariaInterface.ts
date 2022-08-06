@@ -1,5 +1,6 @@
-import { UserInterface } from 'data/@types/UserInterface';
 import { ApiLinksInterface } from './ApiLinksInterface';
+import { UserInterface } from './UserInterface';
+
 export interface DiariaInterface {
     id?: number;
     cliente?: UserInterface;
@@ -9,7 +10,7 @@ export interface DiariaInterface {
     hora_termino?: string;
     tempo_atendimento: number;
     preco: number;
-    status?: DiariaStatus
+    status?: DiariaStatus;
     logradouro?: string;
     bairro: string;
     complemento: string;
@@ -27,12 +28,12 @@ export interface DiariaInterface {
     quantidade_outros: number;
 
     observacoes?: string;
-
+    diarista?: UserInterface;
     servico: number;
     nome_servico: string;
 }
 
-export enum DiariaStatus{
+export enum DiariaStatus {
     SEM_PAGAMENTO = 1,
     PAGO = 2,
     CONFIRMADO = 3,
@@ -42,4 +43,9 @@ export enum DiariaStatus{
     TRANSFERIDO = 7,
 }
 
-export type TextColor = 'success' | 'error' | 'warning' | 'primary' | 'secondary';
+export type TextColor =
+    | 'success'
+    | 'error'
+    | 'warning'
+    | 'primary'
+    | 'secondary';
