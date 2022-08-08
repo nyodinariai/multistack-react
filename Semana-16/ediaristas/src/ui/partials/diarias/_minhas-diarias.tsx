@@ -1,4 +1,4 @@
-import { Container, Typography } from '@material-ui/core';
+import { Button, Container, Typography } from '@material-ui/core';
 import { DiariaStatus } from 'data/@types/DiariaInterface';
 import useMinhasDiarias from 'data/hooks/pages/diarias/useMinhasDiarias.page';
 import { DiariaService } from 'data/services/DiariaService';
@@ -8,6 +8,7 @@ import DataList from 'ui/components/data-display/DataList/DataList';
 import PageTitle from 'ui/components/data-display/PageTitle/PageTitle';
 import Status from 'ui/components/data-display/Status/Status';
 import Table, { TableCell, TablePagination, TableRow } from 'ui/components/data-display/Table/Table';
+import Link from 'ui/components/navigation/Link/Link';
 // import { Component } from './_minhas-diarias.styled';
 
 
@@ -19,10 +20,15 @@ const MinhasDiarias: React.FC = () => {
         setCurrentPage, 
         totalPages, 
         itemsPerPage, 
-        isMobile } = useMinhasDiarias();
+        isMobile,
+        podeVisualizar,
+    } = useMinhasDiarias();
+
+
+
     
     return (
-            <>
+        <>
             <Container sx={{ mb: 5, p: 0 }}>
                 <PageTitle title={'Minhas diárias'} />
                 {filteredData.length > 0 ? (
@@ -53,6 +59,20 @@ const MinhasDiarias: React.FC = () => {
                                             Valor:{' '}
                                             {TextFormatService.currency(
                                                 item.preco
+                                            )}
+                                        </>
+                                    }
+                                    actions={
+                                        <>
+                                            {podeVisualizar(item) && (
+                                                <Button
+                                                    component={Link}
+                                                    href={`?id=${item.id}`}
+                                                    color={'inherit'}
+                                                    variant={'outlined'}
+                                                >
+                                                    Detalhes
+                                                </Button>
                                             )}
                                         </>
                                     }
@@ -106,7 +126,11 @@ const MinhasDiarias: React.FC = () => {
                                             )}
                                         </TableCell>
                                         <TableCell>
-                                            
+                                            {podeVisualizar(item) && (
+                                                <Link href={`?id=${item.id}`}>
+                                                    Detalhes
+                                                </Link>
+                                            )}
                                         </TableCell>
                                     </TableRow>
                                 )}
@@ -125,9 +149,9 @@ const MinhasDiarias: React.FC = () => {
                         Nenhuma diária ainda
                     </Typography>
                 )}
-    </Container>
-    </>
-    )
+            </Container>
+        </>
+    );
 }
 
 export default MinhasDiarias;

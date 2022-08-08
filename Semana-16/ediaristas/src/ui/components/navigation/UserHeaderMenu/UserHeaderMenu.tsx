@@ -24,6 +24,8 @@ const UserHeaderMenu: React.FC<UserHeaderMenuProps> = (props) =>{
             <UserMenu
                 open={props.isMenuOpen}
                 anchorEl={containerRef.current}
+                onClose={props.onMenuClose}
+                onClick={props.onMenuClick}
                 anchorOrigin={{
                     vertical: 'bottom',
                     horizontal: 'right',
@@ -32,8 +34,6 @@ const UserHeaderMenu: React.FC<UserHeaderMenuProps> = (props) =>{
                     vertical: 'top',
                     horizontal: 'right',
                 }}
-                onClose={props.onMenuClose}
-                onClick={props.onMenuClick}
             >
                 <li>
                     <Link href={'/alterar-dados'} mui={{ color: 'inherit' }}>
@@ -41,7 +41,11 @@ const UserHeaderMenu: React.FC<UserHeaderMenuProps> = (props) =>{
                     </Link>
                 </li>
                 <li>
-                    <Link href={''} mui={{ color: 'inherit' }} onClick={props.onLogout}>
+                    <Link
+                        href={''}
+                        mui={{ color: 'inherit' }}
+                        onClick={props.onLogout}
+                    >
                         Sair
                     </Link>
                 </li>
@@ -51,3 +55,4 @@ const UserHeaderMenu: React.FC<UserHeaderMenuProps> = (props) =>{
 }
 
 export default UserHeaderMenu;
+

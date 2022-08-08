@@ -30,8 +30,23 @@ const UserProfilerAvatar: React.FC<UserProfilerAvatarProps> = (props) =>{
                         />
                     )}
                 </Grid>
-                <Grid item>
-                    <AvatarIcon className={'twf-caret-down'} {...props}/>
+                <Grid item container spacing={1} alignItems={'center'}>
+                    <Grid item>
+                        {hasUser ? (
+                            <Typography variant={'body2'} noWrap>
+                                {props.user.nome_completo}
+                            </Typography>
+                        ) : (
+                            <Skeleton
+                                variant={'text'}
+                                width={100}
+                                animation={'wave'}
+                            />
+                        )}
+                    </Grid>
+                    <Grid item>
+                        <AvatarIcon className={'twf-caret-down'} {...props} />
+                    </Grid>
                 </Grid>
             </Grid>
         </Button>
@@ -39,3 +54,4 @@ const UserProfilerAvatar: React.FC<UserProfilerAvatarProps> = (props) =>{
 }
 
 export default UserProfilerAvatar;
+
