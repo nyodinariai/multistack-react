@@ -22,10 +22,10 @@ module.exports = function (plop, handlers) {
                 },
                 {
                     type: 'add',
-                    path: `src/ui/styles/pages/${data.folder.toLowerCase()}/${handlers.createFilename(
+                        path: `src/ui/styles/pages/${data.folder.toLowerCase()}/${handlers.createFilename(
                         data.name
                     )}.styled.tsx`,
-                    templateFile: 'plop/page/page-style-template.hbs',
+                        templateFile: 'plop/page/page-style-template.hbs',
                 },
             ];
 

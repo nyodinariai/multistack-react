@@ -104,6 +104,11 @@ export const AddressData = styled(BaseGrid)`
     }
 `;
 
+
+export const FinancialData = styled(BaseGrid)`
+    grid-template-columns: 1fr;
+`;
+
 export const PictureSelection = styled(BaseGrid)`
     grid-template-columns: 1fr;
     padding: 0;
@@ -119,6 +124,7 @@ export const LoginData = styled(BaseGrid)`
         color: ${({theme}) => theme.palette.text.secondary};
     }
 `;
+
 
 
 
