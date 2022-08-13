@@ -9,6 +9,7 @@ import { UserFormContainer } from 'ui/components/inputs/UserForm/UserForm';
 import { PageFormContainer } from 'ui/components/inputs/UserForm/UserForm.styled';
 import useIsMobile from 'data/hooks/useIsMobile';
 import SideInformation from 'ui/components/data-display/SideInformation/SideInformation';
+import { FormProvider } from 'react-hook-form';
 // import {Component } from 'styles/pages/cadastro/diarista.styled'; 
 
 
@@ -55,7 +56,13 @@ const Diarista: React.FC = () => {
 
           <UserFormContainer>
               <PageFormContainer>
-                  <div></div>
+                  {
+                    step === 1 && (
+                        <FormProvider {...userForm}>
+                            
+                        </FormProvider>
+                    )
+                  }
 
                   {!isMobile && (
                       <SideInformation
