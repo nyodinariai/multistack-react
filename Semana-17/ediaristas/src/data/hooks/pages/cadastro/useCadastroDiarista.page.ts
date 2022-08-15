@@ -3,13 +3,15 @@ import { useState } from 'react';
 
 export default function useCadastroDiarista(){
 
-    const [step, setStep] = useState(1),
+    const [step, setStep] = useState(2),
         breadcrumbItems = ['Identificação', 'Cidades atendidas'],
-        userForm = useForm();
+        userForm = useForm(),
+        addressListForm = useForm()
 
         return{
             step,
             breadcrumbItems,
-            userForm
+            userForm,
+            addressListForm
         }
 }
