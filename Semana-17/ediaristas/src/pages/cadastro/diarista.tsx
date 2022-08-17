@@ -11,6 +11,7 @@ import useIsMobile from 'data/hooks/useIsMobile';
 import SideInformation from 'ui/components/data-display/SideInformation/SideInformation';
 import { FormProvider } from 'react-hook-form';
 import { Button, Container, Divider, Paper, Typography } from '@material-ui/core';
+import Dialog from 'ui/components/feedback/Dialog/Dialog';
 // import {Component } from 'styles/pages/cadastro/diarista.styled'; 
 
 
@@ -164,6 +165,17 @@ const Diarista: React.FC = () => {
                   )}
               </PageFormContainer>
           </UserFormContainer>
+
+          <Dialog 
+            isOpen={false} 
+            title={'Cadastro realizado com sucesso'}
+            noCancel
+            confirmLabel={'Ver oportunidades'}
+            onConfirm={() => window.location.reload()}
+            onClose={() => {}} 
+        >
+            Agora você pode visualizar as oportunidades disponiveis na sua região
+          </Dialog>
       </>
   ); 
 }; 
