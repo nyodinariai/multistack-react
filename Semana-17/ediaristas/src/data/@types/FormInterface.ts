@@ -10,7 +10,7 @@ export interface NovaDiariaFormDataInterface{
 export interface CadastroDiaristaFormDataInterface{
     usuario: UserInterface;
     endereco: EnderecoInterface,
-    enderecosAtendidos: CidadeInterface
+    enderecosAtendidos: CidadeInterface[]
 }
 
 export interface LoginFormDataInterface<T>{
