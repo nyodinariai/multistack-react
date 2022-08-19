@@ -30,6 +30,6 @@ export interface UserShortInformationInterface {
 }
 
 export enum UserType{
-    Cliente = 1,
-    Diarista = 2,
+    Cliente = 1 as number,
+    Diarista = 2 as number,
 }

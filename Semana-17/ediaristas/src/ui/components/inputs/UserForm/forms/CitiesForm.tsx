@@ -5,15 +5,10 @@ import ChipField from "ui/components/data-display/ChipField/ChipField";
 import { CitiesSelection } from "../UserForm.styled";
 import TextField from '../../TextField/TextField'
 
-export const CitiesForm: React.FC<{estado: string}> = ({estado}) => {
-    const {
-        options,
-        handleNewCity,
-        citiesList,
-        citiesName,
-        handleDelete,
-    } = useCitiesForm(estado);
-    
+export const CitiesForm: React.FC<{ estado: string }> = ({ estado }) => {
+    const { options, handleNewCity, citiesList, citiesName, handleDelete } =
+        useCitiesForm(estado);
+
     return (
         <CitiesSelection>
             <Autocomplete
@@ -25,10 +20,10 @@ export const CitiesForm: React.FC<{estado: string}> = ({estado}) => {
                 options={options}
                 getOptionLabel={(option) => option.cidade}
                 loading={citiesList.length === 0}
-                loadingText={'Carregando cidades ...'}
+                loadingText={'Carregando cidades...'}
                 style={{ gridArea: 'busca-cidade' }}
                 noOptionsText={'Nenhuma cidade com esse nome'}
-                renderInput={({InputProps, ...params}) => (
+                renderInput={({ InputProps, ...params }) => (
                     <TextField
                         label={'Busque pelo nome da cidade'}
                         InputProps={{
@@ -52,7 +47,7 @@ export const CitiesForm: React.FC<{estado: string}> = ({estado}) => {
                     />
                 )}
             />
-            <Typography>Cidades Selecionadas</Typography>
+            <Typography>Cidades selecionadas</Typography>
             <ChipField
                 itemsList={citiesName}
                 onDelete={handleDelete}
@@ -60,4 +55,4 @@ export const CitiesForm: React.FC<{estado: string}> = ({estado}) => {
             />
         </CitiesSelection>
     );
-}
+};

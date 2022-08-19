@@ -43,8 +43,9 @@ async function handleTokenRefresh(error: { config: AxiosRequestConfig }){
             ApiService.defaults.headers.common['Authorization'] = AUTH_TOKEN
 
             error.config.headers = {
-                'Authorization' : ApiService.defaults.headers.common['Authorization']
-            }
+                Authorization:
+                    ApiService.defaults.headers.common['Authorization'],
+            };
 
             return ApiService(error.config);
         } catch (err) {

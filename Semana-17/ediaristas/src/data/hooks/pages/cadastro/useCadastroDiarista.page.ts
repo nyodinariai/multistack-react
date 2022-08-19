@@ -1,133 +1,145 @@
-import { ApiService, ApiServiceHateoas, linksResolver } from './../../../services/ApiService';
-import { UserService } from './../../../services/UserService';
-import { ApiLinksInterface } from './../../../@types/ApiLinksInterface';
-import { FormSchemaService } from './../../../services/FormSchemaService';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CadastroDiaristaFormDataInterface } from './../../../@types/FormInterface';
-import { ExternalServiceContext } from './../../../contexts/ExternalServicesContext';
+import { ApiLinksInterface } from './../../../@types/ApiLinksInterface';
 import { EnderecoInterface } from './../../../@types/EnderecoInterface';
+import { CadastroDiaristaFormDataInterface } from './../../../@types/FormInterface';
 import { UserInterface, UserType } from './../../../@types/UserInterface';
-import { useForm } from 'react-hook-form';
-import { useState, useContext } from 'react';
+import { ExternalServiceContext } from './../../../contexts/ExternalServicesContext';
+import { 
+    ApiService, 
+    ApiServiceHateoas, 
+    linksResolver 
+} from './../../../services/ApiService';
+import { FormSchemaService } from './../../../services/FormSchemaService';
 import { LocalStorage } from 'data/services/StorageService';
 import { TextFormatService } from 'data/services/TextFormatService';
+import { UserService } from './../../../services/UserService';
+import { useState, useContext } from 'react';
+import { useForm } from 'react-hook-form';
 
-export default function useCadastroDiarista(){
-
+export default function useCadastroDiarista() {
     const [step, setStep] = useState(1),
         [isWaitingResponse, setWaitingResponse] = useState(false),
         breadcrumbItems = ['Identificação', 'Cidades atendidas'],
-        [newUser, setNewUser] = useState<UserInterface>(),
         userForm = useForm<CadastroDiaristaFormDataInterface>({
-            resolver: yupResolver(FormSchemaService.userData()
+            resolver: yupResolver(
+                FormSchemaService.userData()
                     .concat(FormSchemaService.address())
                     .concat(FormSchemaService.newContact())
-                    ),
+            ),
         }),
+        [newUser, setNewUser] = useState<UserInterface>(),
         [newAddress, setNewAddress] = useState<EnderecoInterface>(),
         addressListForm = useForm<CadastroDiaristaFormDataInterface>(),
         enderecosAtendidos = addressListForm.watch('enderecosAtendidos'),
-        {externalServiceState} = useContext(ExternalServiceContext),
-        [sucessoCadastro, setSucessoCadastro] = useState(false)
+        { externalServiceState } = useContext(ExternalServiceContext),
+        [sucessoCadastro, setSucessoCadastro] = useState(false);
 
-        async function onUserSubmit(data: CadastroDiaristaFormDataInterface){
-            setWaitingResponse(true);
+    async function onUserSubmit(data: CadastroDiaristaFormDataInterface) {
+        setWaitingResponse(true);
 
-            const newUserLink = linksResolver(externalServiceState.externalServices, 'cadastrar_usuario')
+        const newUserLink = linksResolver(
+            externalServiceState.externalServices,
+            'cadastrar_usuario'
+        );
 
-            if(newUserLink){
-                try{
-                    await cadastrarUsuario(data, newUserLink);
-                }catch (error){
-                    handleUserError(error)
-                }
+        if (newUserLink) {
+            try {
+                await cadastrarUsuario(data, newUserLink);
+            } catch (error) {
+                handleUserError(error);
             }
-
-        }       
-        
-        function handleUserError(error: any) {
-            UserService.handleNewUserError(error, userForm);
-            setWaitingResponse(false)
         }
+    }
 
-        async function cadastrarUsuario(
-            data: CadastroDiaristaFormDataInterface, 
-            link: ApiLinksInterface
-            ){
+    function handleUserError(error: any) {
+        UserService.handleNewUserError(error, userForm);
+        setWaitingResponse(false);
+    }
+
+    async function cadastrarUsuario(
+        data: CadastroDiaristaFormDataInterface,
+        link: ApiLinksInterface
+    ) {
+        const newUser = await UserService.cadastrar(
+            data.usuario,
+            UserType.Diarista,
+            link
+        );
+
+        if (newUser) {
+            setNewUser(newUser);
+            cadastrarEndereco(data, newUser);
+            setWaitingResponse(false);
+            setStep(2);
+        }
+    }
+
+    async function cadastrarEndereco(
+        data: CadastroDiaristaFormDataInterface,
+        newUser: UserInterface
+    ) {
+        console.log(newUser)
+        ApiService.defaults.headers.common['Authorization'] = 'Bearer ' + newUser?.token?.access;
             
-                const newUser = await UserService.cadastrar(
-                    data.usuario, 
-                    UserType.Diarista, 
-                    link
-                    );
+        LocalStorage.set('token', newUser.token?.access);
+        LocalStorage.set('token_refresh', newUser.token?.refresh);
 
-            if(newUser){
-                setNewUser(newUser);
-                cadastrarEndereco(data, newUser)
-                setWaitingResponse(false);
-                setStep(2)
-            }
-        }
+        console.log(newUser.links);
 
- 
-
-        async function cadastrarEndereco(data: CadastroDiaristaFormDataInterface, newUser: UserInterface){
-            ApiService.defaults.headers.common['Authorization'] = 'Bearer ' + newUser?.token?.access;
-
-            LocalStorage.set('token', newUser.token?.access);
-            LocalStorage.set('token_refresh', newUser.token?.refresh);
-
-            ApiServiceHateoas(
-                newUser.links, 
-                'cadastrar_endereco', 
-                async (request) =>{
-                    const newAddress = (
-                        await request<EnderecoInterface>({
+        ApiServiceHateoas(
+            newUser.links,
+            'cadastrar_endereco',
+            async (request) => {
+                console.log(request);
+                const newAddress = (
+                    await request<EnderecoInterface>({
                         data: {
                             ...data?.endereco,
                             cep: TextFormatService.getNumbersFromText(
                                 data?.endereco.cep
-                            )
-                    },
-                })
-            ).data;
+                            ),
+                            user_id: newUser.id,
+                        },
+                    })
+                ).data;
 
-                newAddress && setNewAddress(newAddress)
+                newAddress && setNewAddress(newAddress);
+                console.log(newAddress);
             }
-            )
-        }
+        );
+    }
 
-        async function onAddressSubmit(data: CadastroDiaristaFormDataInterface){
-            if(newUser){
-                ApiServiceHateoas(
-                    newUser.links, 
-                    'relacionar_cidades', 
-                    async (request) => {
-                        try {
-                            setWaitingResponse(true);
-                            await request({
-                                data:{
-                                    cidades: data?.enderecosAtendidos
-                                }
+    async function onAddressSubmit(data: CadastroDiaristaFormDataInterface) {
+        if (newUser) {
+            ApiServiceHateoas(
+                newUser.links,
+                'relacionar_cidades',
+                async (request) => {
+                    try {
+                        setWaitingResponse(true);
+                        await request({
+                            data: {
+                                cidades: data?.enderecosAtendidos,
+                            },
                         });
 
                         setSucessoCadastro(true);
                     } catch (error) {}
                 }
-                )
-            }
+            );
         }
+    }
 
-        return {
-            step,
-            isWaitingResponse,
-            breadcrumbItems,
-            userForm,
-            onUserSubmit,
-            addressListForm,
-            onAddressSubmit,
-            newAddress,
-            sucessoCadastro,
-            enderecosAtendidos,
-        };
+    return {
+        step,
+        isWaitingResponse,
+        breadcrumbItems,
+        userForm,
+        onUserSubmit,
+        addressListForm,
+        onAddressSubmit,
+        newAddress,
+        sucessoCadastro,
+        enderecosAtendidos,
+    };
 }
