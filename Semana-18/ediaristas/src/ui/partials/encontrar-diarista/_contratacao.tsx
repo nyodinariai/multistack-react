@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Container, Paper, stepButtonClasses, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Container, Paper, stepButtonClasses, Typography } from '@mui/material';
 import useContratacao from 'data/hooks/pages/useContratacao.page';
 import useIsMobile from 'data/hooks/useIsMobile';
 import React from 'react';

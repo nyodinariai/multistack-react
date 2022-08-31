@@ -7,7 +7,7 @@ import {
   IconButton,
   LinkProps,
   Container,
-} from "@material-ui/core";
+} from "@mui/material";
 
 export const FooterContainer = styled("footer")`
   background-color: ${({ theme }) => theme.palette.primary.main};

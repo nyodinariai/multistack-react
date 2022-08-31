@@ -1,5 +1,5 @@
 import React from "react";
-import { OutlinedTextFieldProps } from "@material-ui/core";
+import { OutlinedTextFieldProps } from "@mui/material";
 import InputMask from "react-input-mask";
 import TextField from "../TextField/TextField";
 

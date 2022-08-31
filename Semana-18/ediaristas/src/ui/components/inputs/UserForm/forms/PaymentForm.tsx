@@ -3,7 +3,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { PaymentData } from "../UserForm.styled";
 import TextField from '../../TextField/TextField';
 import TextFieldMask from "../../TextFieldMask/TextFieldMask";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { useEffect } from "react";
 
 export const PaymentForm = () => {

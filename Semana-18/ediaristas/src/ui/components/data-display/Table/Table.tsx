@@ -1,5 +1,5 @@
 import React,  {useMemo } from "react";
-//import { } from '@material-ui/core'
+//import { } from '@mui/material'
 import { TablePaper, TableStyled, TableContainerStyled, TableHeadStyled, TableRowStyled, TableCellStyled, TableBodyStyled, TablePaginationStyled } from './Table.styled'
 
 export interface TableProps<T>{

@@ -1,7 +1,7 @@
-import { propsToClassKey } from "@material-ui/styles";
+import { propsToClassKey } from "@mui/system";
 import React from "react";
 import { ChipsContainer, ChipStyled } from "./ChipField.styled";
-//import { } from '@material-ui/core'
+//import { } from '@mui/material'
 //import { Component } from './ChipField.styled'
 
 export interface ChipFieldProps{

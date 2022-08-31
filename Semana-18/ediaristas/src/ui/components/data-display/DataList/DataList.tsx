@@ -3,7 +3,7 @@ import {
     AccordionActions,
     AccordionDetails,
     AccordionSummary,
-} from '@material-ui/core';
+} from '@mui/material';
 import { AccordionStyled } from './DataList.styled';
 
 export interface DataListProps {

@@ -10,7 +10,7 @@ import { PageFormContainer } from 'ui/components/inputs/UserForm/UserForm.styled
 import useIsMobile from 'data/hooks/useIsMobile';
 import SideInformation from 'ui/components/data-display/SideInformation/SideInformation';
 import { FormProvider } from 'react-hook-form';
-import { Button, Container, Divider, Paper, Typography } from '@material-ui/core';
+import { Button, Container, Divider, Paper, Typography } from '@mui/material';
 import Dialog from 'ui/components/feedback/Dialog/Dialog';
 import { BrowserService } from 'data/services/BrowserService';
 // import {Component } from 'styles/pages/cadastro/diarista.styled'; 

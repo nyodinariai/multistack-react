@@ -1,6 +1,6 @@
 import React from "react";
 import { JobDataContainer, JobInformationContainer, JobInformationIcon } from "./JobInformation.styled";
-//import { } from '@material-ui/core'
+//import { } from '@mui/material'
 //import { Component } from './JobInformation.styled'
 
 export interface JobInformationProps{}

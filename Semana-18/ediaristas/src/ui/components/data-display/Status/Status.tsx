@@ -1,6 +1,6 @@
 import { TextColor } from "data/@types/DiariaInterface";
 import React from "react";
-//import { } from '@material-ui/core'
+//import { } from '@mui/material'
 import { StatusStyled } from './Status.styled'
 
 export interface StatusProps{

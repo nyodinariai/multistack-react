@@ -1,5 +1,5 @@
-import { styled } from '@material-ui/core/styles';
-import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Pagination, Paper } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Pagination, Paper } from '@mui/material';
 // import { TableProps } from './Table';
 
 export const TablePaper = styled(Paper)`

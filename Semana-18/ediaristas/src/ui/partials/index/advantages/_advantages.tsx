@@ -1,4 +1,4 @@
-import { Container, ListItem, ListItemAvatar } from "@material-ui/core";
+import { Container, ListItem, ListItemAvatar } from "@mui/material";
 import React from "react";
 import {
   AvatarStyled,

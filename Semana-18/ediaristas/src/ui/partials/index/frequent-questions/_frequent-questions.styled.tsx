@@ -1,5 +1,5 @@
-import { Accordion } from "@material-ui/core";
-import { styled } from "@material-ui/core/styles";
+import { Accordion } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 export const SectionContainer = styled("section")`
   padding-bottom: ${({ theme }) => theme.spacing(7)};

@@ -1,4 +1,4 @@
-import { Autocomplete, MenuItem } from "@material-ui/core"
+import { Autocomplete, MenuItem } from "@mui/material"
 import useAddressForm from "data/hooks/components/inputs/UserForm/forms/useAddressForm"
 import { Controller } from "react-hook-form"
 import Select from "../../Select/Select"

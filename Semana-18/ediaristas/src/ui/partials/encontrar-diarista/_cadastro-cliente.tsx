@@ -1,4 +1,4 @@
-import { Button, Container, Divider, Typography } from '@material-ui/core';
+import { Button, Container, Divider, Typography } from '@mui/material';
 import React from 'react';
 import { LoginForm, NewContactForm, PictureForm, UserDataForm } from 'ui/components/inputs/UserForm/UserForm';
 import { LoginButtonsContainer } from './_cadastro-cliente.styled';

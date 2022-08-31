@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import SafeEnvironment from "ui/components/feedback/SafeEnvironment/SafeEnvironment";
-import { Container, Typography } from "@material-ui/core";
+import { Container, Typography } from "@mui/material";
 import PageTitle from "ui/components/data-display/PageTitle/PageTitle";
 import { LoginButton, LoginContainer } from "@styles/pages/login.styled";
 import { LoginForm } from "ui/components/inputs/UserForm/UserForm";

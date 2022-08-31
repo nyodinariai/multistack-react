@@ -1,6 +1,6 @@
-import { styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import theme from 'ui/themes/light-theme';
-import { Container } from '@material-ui/core';
+import { Container } from '@mui/material';
 // import { UserFormProps } from './UserForm';
 
 

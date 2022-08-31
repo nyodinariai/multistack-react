@@ -3,7 +3,7 @@ import {
     ToggleButtonStyled,
     ToggleButtonGroupStyled,
 } from './ToggleButtonGroup.styled';
-//import { } from '@material-ui/core'
+//import { } from '@mui/material'
 //import { Component } from './ToggleButtonGroup.styled'
 
 export interface ToggleButtonGroupProps {}

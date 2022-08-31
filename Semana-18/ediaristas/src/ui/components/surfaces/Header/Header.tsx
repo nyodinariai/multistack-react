@@ -5,7 +5,7 @@ import {
   MenuItem,
   MenuList,
   Toolbar,
-} from "@material-ui/core";
+} from "@mui/material";
 import Link from "ui/components/navigation/Link/Link";
 import {
   ButtonsContainer,
