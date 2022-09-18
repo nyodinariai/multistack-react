@@ -1,8 +1,9 @@
+import { mutate } from 'swr';
 import { DiariaInterface } from 'data/@types/DiariaInterface';
 import { DiariaContext } from 'data/contexts/DiariasContext';
 import useIsMobile from 'data/hooks/useIsMobile';
 import usePagination from 'data/hooks/usePagination.hook';
-import { linksResolver } from 'data/services/ApiService';
+import { linksResolver, ApiServiceHateoas } from 'data/services/ApiService';
 import { useContext, useState } from 'react';
 
 export default function useMinhasDiarias() {
@@ -26,6 +27,26 @@ export default function useMinhasDiarias() {
             return linksResolver(diaria.links, 'confirmar_diarista') !== undefined;
         }
 
+        async function  confirmarDiaria(diaria: DiariaInterface) {
+            ApiServiceHateoas(
+                diaria.links,
+                'confirmar_diarista',
+                async (request) => {
+                    try {
+                        await request();
+                        setDiariaConfirmar({} as DiariaInterface);
+                        atualizarDiarias();
+                    } catch (error) {
+                        
+                    }
+                }
+            )
+        }
+
+        function atualizarDiarias(){
+            mutate('lista_diarias')
+        }
+
     return {
         filteredData,
         currentPage,
@@ -36,6 +57,7 @@ export default function useMinhasDiarias() {
         podeVisualizar,
         podeConfirmar,
         diariaConfirmar,
-        setDiariaConfirmar
+        setDiariaConfirmar,
+        confirmarDiaria
     };
 }

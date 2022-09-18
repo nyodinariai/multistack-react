@@ -1,5 +1,5 @@
 import { Button, Container, Typography } from '@mui/material';
-import { DiariaStatus } from 'data/@types/DiariaInterface';
+import { DiariaInterface, DiariaStatus } from 'data/@types/DiariaInterface';
 import useMinhasDiarias from 'data/hooks/pages/diarias/useMinhasDiarias.page';
 import { DiariaService } from 'data/services/DiariaService';
 import { TextFormatService } from 'data/services/TextFormatService';
@@ -9,19 +9,24 @@ import PageTitle from 'ui/components/data-display/PageTitle/PageTitle';
 import Status from 'ui/components/data-display/Status/Status';
 import Table, { TableCell, TablePagination, TableRow } from 'ui/components/data-display/Table/Table';
 import Link from 'ui/components/navigation/Link/Link';
+import { ConfirmDialog } from './_minhas-diarias-dialogs';
 // import { Component } from './_minhas-diarias.styled';
 
 
 const MinhasDiarias: React.FC = () => { 
     
-    const { 
+    const {
         filteredData,
-        currentPage, 
-        setCurrentPage, 
-        totalPages, 
-        itemsPerPage, 
+        currentPage,
+        setCurrentPage,
+        totalPages,
+        itemsPerPage,
         isMobile,
         podeVisualizar,
+        podeConfirmar,
+        diariaConfirmar,
+        setDiariaConfirmar,
+        confirmarDiaria,
     } = useMinhasDiarias();
 
 
@@ -72,6 +77,17 @@ const MinhasDiarias: React.FC = () => {
                                                     variant={'outlined'}
                                                 >
                                                     Detalhes
+                                                </Button>
+                                            )}
+                                            {podeConfirmar(item) && (
+                                                <Button
+                                                    color={'success'}
+                                                    variant={'contained'}
+                                                    onClick={() =>
+                                                        setDiariaConfirmar(item)
+                                                    }
+                                                >
+                                                    Confirmar Presença
                                                 </Button>
                                             )}
                                         </>
@@ -132,6 +148,15 @@ const MinhasDiarias: React.FC = () => {
                                                 </Link>
                                             )}
                                         </TableCell>
+                                        <TableCell>
+                                            {podeConfirmar(item) && (
+                                                <Button 
+                                                color={'success'}
+                                                onClick={() => { setDiariaConfirmar(item)}}>
+                                                    Confirmar Presença
+                                                </Button>
+                                            )}
+                                        </TableCell>
                                     </TableRow>
                                 )}
                             />
@@ -150,6 +175,14 @@ const MinhasDiarias: React.FC = () => {
                     </Typography>
                 )}
             </Container>
+
+            {diariaConfirmar.id && (
+                <ConfirmDialog 
+                    diaria={diariaConfirmar}
+                    onConfirm={confirmarDiaria}
+                    onCancel={() => setDiariaConfirmar({} as DiariaInterface)}
+                />
+            )}
         </>
     );
 }

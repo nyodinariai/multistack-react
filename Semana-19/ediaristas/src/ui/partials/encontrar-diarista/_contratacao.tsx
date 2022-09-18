@@ -12,7 +12,7 @@ import { FormProvider } from 'react-hook-form';
 import DetalhesServico from './_detalhes-servico';
 import CadastroCliente, { LoginCliente } from './_cadastro-cliente';
 import InformacoesPagamento from './_informacoes-pagamento';
-import { Box } from '@material-ui/system';
+import { Box } from '@mui/material';
 import Link from 'ui/components/navigation/Link/Link';
 import { useEffect } from 'react';
 import { BrowserService } from 'data/services/BrowserService';
