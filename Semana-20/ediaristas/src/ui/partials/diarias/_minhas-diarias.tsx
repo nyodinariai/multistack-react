@@ -210,6 +210,14 @@ const MinhasDiarias: React.FC = () => {
                     onCancel={() => setDiariaConfirmar({} as DiariaInterface)}
                 />
             )}
+
+            {diariaAvaliar.id && (
+                <ConfirmDialog
+                    diaria={diariaAvaliar}
+                    onConfirm={() => {}}
+                    onCancel={() => setDiariaAvaliar({} as DiariaInterface)}
+                />
+            )}
         </>
     );
 }

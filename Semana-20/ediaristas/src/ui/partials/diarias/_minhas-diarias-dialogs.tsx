@@ -1,10 +1,12 @@
-import { Typography } from "@mui/material";
+import { Divider, Rating, Typography } from "@mui/material";
 import { DiariaInterface } from "data/@types/DiariaInterface";
 import { DateService } from "data/services/DateService";
 import { TextFormatService } from "data/services/TextFormatService";
 import JobInformation from "ui/components/data-display/JobInformation/JobInformation";
 import UserInformation from "ui/components/data-display/UserInformation/UserInformation";
 import Dialog from "ui/components/feedback/Dialog/Dialog";
+import { RatingBox } from "./_minhas-diarias.styled";
+import TextField  from "../../components/inputs/TextField/TextField";
 
 interface DialogProps{
     diaria: DiariaInterface;
@@ -29,6 +31,52 @@ const JobBox: React.FC<{diaria: DiariaInterface}> = ({diaria}) => {
         </JobInformation>
     )
 }
+
+interface RatingDialogProps extends Omit<DialogProps, 'onConfirm'>{
+    onConfirm: (diaria: DiariaInterface, avaliacao: {
+        descricao: string
+        nota: number
+    }) => void
+}
+
+export const RatingDialog: React.FC<RatingDialogProps> = (props) => {
+    const diarista = props.diaria.diarista;
+    return (
+        <Dialog
+            isOpen={true}
+            onClose={props.onCancel}
+            onConfirm={() => {}}
+            title={'Avaliar uma diária'}
+            subtitle={'Avalie a diária abaixo'}
+        >
+            <JobBox diaria={props.diaria} />
+            <UserInformation
+                name={diarista?.nome_completo || ''}
+                rating={diarista?.reputacao || 1}
+                description={
+                    'Telefone: ' +
+                    TextFormatService.formatPhoneNumber(
+                        diarista?.telefone || ''
+                    )
+                }
+                picture={diarista?.foto_usuario || ''}
+            />
+
+            <Divider sx={{my: 4}} />
+
+            <Typography>
+                Deixe sua avaliação
+            </Typography>
+
+            <RatingBox>
+                <strong>Nota: </strong>
+                <Rating />
+                <strong>Depoimento:</strong>
+                <TextField />
+            </RatingBox>
+        </Dialog>
+    );
+};
 
 export const ConfirmDialog: React.FC<DialogProps> = (props) => {
     const diarista = props.diaria.diarista; 
