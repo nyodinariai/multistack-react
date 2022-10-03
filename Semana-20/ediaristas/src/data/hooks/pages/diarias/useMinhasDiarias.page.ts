@@ -46,6 +46,22 @@ export default function useMinhasDiarias() {
             )
         }
 
+        async function avaliarDiaria(diaria: DiariaInterface, avaliacao: { descricao: string, nota: number}) {
+            ApiServiceHateoas(
+                diaria.links,
+                'avaliar_diaria',
+                async (request) => {
+                    try {
+                        await request({
+                        data: avaliacao
+                        });
+                        setDiariaAvaliar({} as DiariaInterface);
+                        atualizarDiarias();
+                    } catch (error) {}
+                }
+            );
+        }
+
         function atualizarDiarias(){
             mutate('lista_diarias')
         }
@@ -64,6 +80,7 @@ export default function useMinhasDiarias() {
         confirmarDiaria,
         diariaAvaliar,
         setDiariaAvaliar,
-        podeAvaliar
+        podeAvaliar,
+        avaliarDiaria
     };
 }

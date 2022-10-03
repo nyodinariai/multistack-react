@@ -9,7 +9,7 @@ import PageTitle from 'ui/components/data-display/PageTitle/PageTitle';
 import Status from 'ui/components/data-display/Status/Status';
 import Table, { TableCell, TablePagination, TableRow } from 'ui/components/data-display/Table/Table';
 import Link from 'ui/components/navigation/Link/Link';
-import { ConfirmDialog } from './_minhas-diarias-dialogs';
+import { ConfirmDialog, RatingDialog } from './_minhas-diarias-dialogs';
 // import { Component } from './_minhas-diarias.styled';
 
 
@@ -30,6 +30,7 @@ const MinhasDiarias: React.FC = () => {
         diariaAvaliar,
         setDiariaAvaliar,
         podeAvaliar,
+        avaliarDiaria,
     } = useMinhasDiarias();
 
 
@@ -212,9 +213,9 @@ const MinhasDiarias: React.FC = () => {
             )}
 
             {diariaAvaliar.id && (
-                <ConfirmDialog
+                <RatingDialog
                     diaria={diariaAvaliar}
-                    onConfirm={() => {}}
+                    onConfirm={avaliarDiaria}
                     onCancel={() => setDiariaAvaliar({} as DiariaInterface)}
                 />
             )}

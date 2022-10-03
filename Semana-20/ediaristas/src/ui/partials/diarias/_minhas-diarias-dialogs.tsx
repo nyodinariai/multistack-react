@@ -1,4 +1,4 @@
-import { Divider, Rating, Typography } from "@mui/material";
+import { Divider, Rating, Snackbar, Typography } from "@mui/material";
 import { DiariaInterface } from "data/@types/DiariaInterface";
 import { DateService } from "data/services/DateService";
 import { TextFormatService } from "data/services/TextFormatService";
@@ -7,6 +7,10 @@ import UserInformation from "ui/components/data-display/UserInformation/UserInfo
 import Dialog from "ui/components/feedback/Dialog/Dialog";
 import { RatingBox } from "./_minhas-diarias.styled";
 import TextField  from "../../components/inputs/TextField/TextField";
+import useIsMobile from "data/hooks/useIsMobile";
+import { useContext, useState } from "react";
+import { UserContext } from "data/contexts/UserContext";
+import { UserType } from "data/@types/UserInterface";
 
 interface DialogProps{
     diaria: DiariaInterface;
@@ -40,26 +44,40 @@ interface RatingDialogProps extends Omit<DialogProps, 'onConfirm'>{
 }
 
 export const RatingDialog: React.FC<RatingDialogProps> = (props) => {
+    const isMobile = useIsMobile(),
+    {user } = useContext(UserContext).userState,
+    usuarioAvaliado = user.tipo_usuario === UserType.Cliente ? props.diaria?.diarista : props.diaria?.cliente, 
+    [descricao, setDescricao] = useState(''),
+    [nota, setNote] = useState(3),
+    [erro, setErro] = useState('')
     const diarista = props.diaria.diarista;
+
+    function tentarAvaliar(){
+        if(descricao.length > 3){
+            props.onConfirm(props.diaria, {descricao, nota});
+            } else{
+                setErro('Escreva um depoimento')
+            }
+        }
     return (
         <Dialog
             isOpen={true}
             onClose={props.onCancel}
-            onConfirm={() => {}}
+            onConfirm={tentarAvaliar}
             title={'Avaliar uma diária'}
             subtitle={'Avalie a diária abaixo'}
         >
             <JobBox diaria={props.diaria} />
             <UserInformation
-                name={diarista?.nome_completo || ''}
-                rating={diarista?.reputacao || 1}
+                name={usuarioAvaliado?.nome_completo || ''}
+                rating={usuarioAvaliado?.reputacao || 1}
                 description={
                     'Telefone: ' +
                     TextFormatService.formatPhoneNumber(
-                        diarista?.telefone || ''
+                        usuarioAvaliado?.telefone || ''
                     )
                 }
-                picture={diarista?.foto_usuario || ''}
+                picture={usuarioAvaliado?.foto_usuario || ''}
             />
 
             <Divider sx={{my: 4}} />
@@ -70,10 +88,13 @@ export const RatingDialog: React.FC<RatingDialogProps> = (props) => {
 
             <RatingBox>
                 <strong>Nota: </strong>
-                <Rating />
+                <Rating value={nota} onChange={(_event, value) => setNote(value || 1)} size={isMobile ? 'large' : 'small'} />
                 <strong>Depoimento:</strong>
-                <TextField />
+                <TextField label={'Digite aqui o seu depoimento'} fullWidth multiline rows={3} value={descricao} onChange={(event) => setDescricao(event.target.value)}/>
             </RatingBox>
+            <Snackbar open={erro.length > 0}
+                autoHideDuration={4000}
+                message={erro} onClose={() => setErro('')}/>
         </Dialog>
     );
 };
