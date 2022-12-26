@@ -1,0 +1,15 @@
+{
+    "extends": ["next", "next/core-web-vitals", "prettier"],
+    "plugins": ["prettier"],
+    "rules": {
+        "@next/next/no-img-element": "off"
+        // "quotes": ["error", "single"],
+        // "semi": ["error", "aways"]
+        // "prettier/prettier": [
+        //     "error",
+        //     {
+        //         "endOfLine": "crlf"
+        //     }
+        // ]
+    }
+}
